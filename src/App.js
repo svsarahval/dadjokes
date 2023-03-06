@@ -1,10 +1,10 @@
 import './App.css';
-import Jokelist from './Components/Jokelist';
+import DadJokes from './Components/DadJokespg';
 
 function App() {
   return (
     <div className='App'>
-      <Jokelist />
+      <DadJokes />
     </div>
   );
 }
