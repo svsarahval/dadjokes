@@ -1,25 +1,39 @@
 import { useState, useEffect } from 'react';
 
-export function useDadJokes(searchTerm) {
-  const [url, setUrl] = useState('https://icanhazdadjoke.com/');
-  const [joke, setJoke] = useState('');
+function useDadJokes(initialUrl = 'https://icanhazdadjoke.com/') {
+  const [url, setUrl] = useState(initialUrl);
+  const [data, setData] = useState([]);
+  const [search, setSearch] = useState('');
 
   async function fetchData() {
     const res = await fetch(url, {
       headers: { Accept: 'application/json' },
     });
     const json = await res.json();
-    setJoke(json.joke);
+    setData(json.joke);
   }
 
-  async function searchJokes() {
-    setUrl(`https://icanhazdadjoke.com/search?term=${searchTerm}`);
+  async function searchData() {
+    const res = await fetch(url, {
+      headers: { Accept: 'application/json' },
+    });
+
+    const json = await res.json();
+    const work = Math.floor(Math.random() * json.results.length);
+    setData(json.results[work].joke);
   }
 
   useEffect(() => {
     fetchData();
-  }, [url]);
+  }, []);
 
-  return { joke, setUrl, searchJokes };
+  const handleSearch = (searchTerm) => {
+    setSearch(searchTerm);
+    setUrl(`https://icanhazdadjoke.com/search?term=${searchTerm}`);
+    searchData();
+  };
+
+  return { data, handleSearch };
 }
+
 export default useDadJokes;

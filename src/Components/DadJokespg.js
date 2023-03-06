@@ -2,66 +2,25 @@ import React, { useState } from 'react';
 import useDadJokes from '../Hooks/useDadJokes';
 
 function DadJokespg() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const { joke, setUrl, searchJokes } = useDadJokes(searchTerm);
+  const { data, handleSearch } = useDadJokes();
 
   const handleChange = (e) => {
-    setSearchTerm(e.target.value);
+    handleSearch(e.target.value);
   };
 
   return (
     <div className='listContainer'>
       <div className='Joke-list'>
         <h1>Dad Jokes</h1>
-        <p>{joke}</p>
+        <p>{data}</p>
 
         <div className='buttons'>
-          <input
-            onChange={handleChange}
-            type='text'
-            value={searchTerm}
-            placeholder='Search'
-          />
-          <button
-            onClick={() => {
-              searchJokes();
-            }}
-          >
-            {' '}
-            Search Jokes
-          </button>
-          <button
-            onClick={() => {
-              setUrl('https://icanhazdadjoke.com/search?term=baby');
-            }}
-          >
-            {' '}
-            Baby Jokes
-          </button>
-          <button
-            onClick={() => {
-              setUrl('https://icanhazdadjoke.com/');
-            }}
-          >
-            {' '}
-            Random Jokes
-          </button>
-          <button
-            onClick={() => {
-              setUrl('https://icanhazdadjoke.com/search?term=feet');
-            }}
-          >
-            {' '}
-            Feet Jokes
-          </button>
-          <button
-            onClick={() => {
-              setUrl('https://icanhazdadjoke.com/search?term=pants');
-            }}
-          >
-            {' '}
-            Pant Jokes
-          </button>
+          <input onChange={handleChange} type='text' placeholder='Search' />
+          <button onClick={() => handleSearch('')}>Search</button>
+          <button onClick={() => handleSearch('baby')}>Baby Jokes</button>
+          <button onClick={() => handleSearch('feet')}>Feet Jokes</button>
+          <button onClick={() => handleSearch('pants')}>Pant Jokes</button>
+          <button onClick={() => handleSearch('')}>Random Jokes</button>
         </div>
       </div>
     </div>
