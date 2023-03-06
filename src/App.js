@@ -1,10 +1,10 @@
 import './App.css';
-import DadJokes from './Components/DadJokespg';
+import DadJokespg from './Components/DadJokespg';
 
 function App() {
   return (
     <div className='App'>
-      <DadJokes />
+      <DadJokespg />
     </div>
   );
 }
