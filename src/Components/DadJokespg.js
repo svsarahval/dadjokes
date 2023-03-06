@@ -1,23 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFetch } from '../Hooks/useFetch.js';
 
-const Jokelist = () => {
-  const [url, setUrl] = useState('GET https://icanhazdadjoke.com/');
-  const { data: randomJokes } = useFetch(url);
+function DadJokes() {
+  const [url, setUrl] = useState('https://icanhazdadjoke.com/');
+  const [data, setData] = useState([]);
+
+  async function fetchData() {
+    const res = await fetch(url, {
+      headers: { Accept: 'application/json' },
+    });
+    const json = await res.json();
+    setData(json.joke);
+    console.log(json.joke);
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className='listContainer'>
       <div className='Joke-list'>
-        <h2>Joke List</h2>
-        <ul>
-          {randomJokes &&
-            randomJokes.map((randomJoke) => (
-              <li key={randomJoke.id}>
-                <h3> {randomJoke.joke}</h3>
-                <p>{randomJoke.status}</p>
-              </li>
-            ))}
-        </ul>
+        <h1>Joke #</h1>
+        <p>{data}</p>
+
         <div className='buttons'>
           <button
             onClick={() => setUrl('GET https://icanhazdadjoke.com/search')}
@@ -39,5 +44,6 @@ const Jokelist = () => {
       </div>
     </div>
   );
-};
-export default Jokelist;
+}
+
+export default DadJokes;

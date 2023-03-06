@@ -5,7 +5,9 @@ export const useFetch = (url) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(url);
+      const res = await fetch('https://icanhazdadjoke.com/', {
+        headers: { Accept: 'application/json' },
+      });
       const json = await res.json();
       setData(json);
     };
