@@ -1,56 +1,30 @@
-import { useEffect, useState } from 'react';
-import { useFetch } from '../Hooks/useFetch.js';
+import React, { useState } from 'react';
+import { useDadJokes } from '../hooks/useDadJokes';
 
 function DadJokespg() {
-  const [url, setUrl] = useState('https://icanhazdadjoke.com/');
-  const [data, setData] = useState([]);
-  const [search, setSearch] = useState('');
-
-  async function fetchData() {
-    const res = await fetch(url, {
-      headers: { Accept: 'application/json' },
-    });
-    const json = await res.json();
-    setData(json.joke);
-    console.log(json.joke);
-  }
-
-  async function searchData() {
-    const res = await fetch(url, {
-      headers: { Accept: 'application/json' },
-    });
-
-    const json = await res.json();
-    const work = Math.floor(Math.random() * json.results.length);
-    setData(json.results[work].joke);
-    console.log(json.results[work].joke);
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { joke, setUrl, searchJokes } = useDadJokes(searchTerm);
 
   const handleChange = (e) => {
-    setSearch(e.target.value);
+    setSearchTerm(e.target.value);
   };
 
   return (
     <div className='listContainer'>
       <div className='Joke-list'>
-        <h1>Joke #</h1>
-        <p>{data}</p>
+        <h1>Dad Jokes</h1>
+        <p>{joke}</p>
 
         <div className='buttons'>
           <input
             onChange={handleChange}
             type='text'
-            value={search}
+            value={searchTerm}
             placeholder='Search'
           />
           <button
             onClick={() => {
-              searchData();
-              setUrl(`https://icanhazdadjoke.com/search?=term${search}`);
+              searchJokes();
             }}
           >
             {' '}
@@ -58,8 +32,6 @@ function DadJokespg() {
           </button>
           <button
             onClick={() => {
-              fetchData();
-              searchData();
               setUrl('https://icanhazdadjoke.com/search?term=baby');
             }}
           >
@@ -68,29 +40,22 @@ function DadJokespg() {
           </button>
           <button
             onClick={() => {
-              fetchData();
-              searchData();
+              setUrl('https://icanhazdadjoke.com/');
             }}
           >
             {' '}
             Random Jokes
           </button>
-
           <button
             onClick={() => {
-              fetchData();
-              searchData();
               setUrl('https://icanhazdadjoke.com/search?term=feet');
             }}
           >
             {' '}
             Feet Jokes
           </button>
-
           <button
             onClick={() => {
-              fetchData();
-              searchData();
               setUrl('https://icanhazdadjoke.com/search?term=pants');
             }}
           >
@@ -104,3 +69,30 @@ function DadJokespg() {
 }
 
 export default DadJokespg;
+
+// function DadJokespg() {
+//   const { data, handleSearch } = useDadJokes();
+
+//   const handleChange = (e) => {
+//     handleSearch(e.target.value);
+//   };
+
+//   return (
+//     <div className='listContainer'>
+//       <div className='Joke-list'>
+//         <h1>Dad Jokes</h1>
+//         <p>{data}</p>
+
+//         <div className='buttons'>
+//           <input onChange={handleChange} type='text' placeholder='Search' />
+//           <button onClick={() => handleSearch('baby')}>Baby Jokes</button>
+//           <button onClick={() => handleSearch('feet')}>Feet Jokes</button>
+//           <button onClick={() => handleSearch('pants')}>Pant Jokes</button>
+//           <button onClick={() => handleSearch('')}>Random Jokes</button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default DadJokespg;
